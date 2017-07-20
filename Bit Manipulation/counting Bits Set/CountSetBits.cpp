@@ -30,6 +30,17 @@ int DpMethod(int v)
      return nowCounter;
 }
 
+int BrainKernighanMehod(int num)
+{
+	int count=0;
+
+	for(;num;count++)
+	{
+		num=num & (num-1);
+	}
+	return count;
+}
+
 int main(int argc, char const *argv[])
 {
 	int enterNum;  //enter the number whose set bits you want to calculate.
@@ -40,6 +51,9 @@ int main(int argc, char const *argv[])
 
       cout<<"Number of set bits by Dp Method : ";
       cout<<DpMethod(enterNum)<<endl;
+
+       cout<<"Number of set bits by Brain Kernighan Mehod : ";
+      cout<<BrainKernighanMehod(enterNum)<<endl;
 
 	return 0;
 }

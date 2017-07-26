@@ -16,9 +16,29 @@ unsigned int reverseBits(unsigned int num)
     return reverse_num;
 }
  
+unsigned int neiveApproach(unsigned int num)
+{
+	int v=num;
+	int r=v;
+	int s=sizeof(v)*8 -1;
+
+	for(v=v>>1;v;v>>=1)
+	{
+		r<<=1;
+		r|=v&1;
+		s--;
+	}
+	r<<=s;
+	return r;
+
+}
+
+
 /* Driver function to test above function */
 int main()
 {
     unsigned int x = 1; 
-    cout<<reverseBits(x);
+    cout<<reverseBits(x)<<endl;
+
+    cout<<"neive Approach :" <<neiveApproach(x);
 }

@@ -986,6 +986,79 @@ vector<vector<int> > veticaltraversal(treenode* root)
     return v;
 }
 
+int identicalTrees(treenode* root1,treenode* root2)
+{
+    if(root1==NULL && root2==NULL)
+    {
+      return 1;
+    }else if(root1!=NULL && root2==NULL)
+    {
+      return 0;
+    }else if(root1==NULL && root2!=NULL)
+    {
+      return 0;
+    }
+    if(root1->data==root2->data)
+    {
+      return (identicalTrees(root1->left,root2->left) && identicalTrees(root1->rigth,root2->rigth));
+    }
+    return 0;
+}
+
+void NodeOftreeFun(treenode* root,vector<treenode*> &NodeOftree)
+{
+    if(root==NULL)
+      return;
+    NodeOftree.push_back(root);
+    NodeOftreeFun(root->left,NodeOftree);
+    NodeOftreeFun(root->rigth,NodeOftree);
+}
+
+vector<treenode*> NumberOfduplicateSubtrees(treenode* root)
+{
+     std::vector<treenode*> NodeOftree;
+  
+     NodeOftreeFun(root,NodeOftree);
+   vector<treenode*> Ansvector;
+
+   for(int i=0;i<NodeOftree.size();i++)
+   {
+       for(int j=i+1;j<NodeOftree.size();j++)
+       {
+           if(identicalTrees(NodeOftree[i],NodeOftree[j]))
+           {
+               Ansvector.push_back(NodeOftree[i]);
+           }
+       }
+   }
+
+return NodeOftree;
+}
+
+void SerializationUtil(treenode* root,vector<int> &v)
+{
+    if(root==NULL)
+    {
+        v.push_back(-1);
+        return;
+    }
+    v.push_back(root->data);
+    SerializationUtil(root->left,v);
+    SerializationUtil(root->rigth,v);
+}
+
+void Serialization(treenode* root)
+{
+  std::vector<int> v;
+  SerializationUtil(root,v);
+
+  for(int i=0;i<v.size();i++)
+  {
+    cout<<v[i]<<" ";
+  }
+  cout<<endl;
+  
+}
 
 
 int main(int argc, char const *argv[])
@@ -1006,6 +1079,7 @@ int main(int argc, char const *argv[])
      insertbst(&root,18);
     
 
+
       insertbst(&root2,13);
      insertbst(&root2,10);
      insertbst(&root2,11);
@@ -1014,11 +1088,17 @@ int main(int argc, char const *argv[])
      insertbst(&root2,16);
      insertbst(&root2,17);
 
-    vector<std::vector<int> > v;
-    v=veticaltraversal(root);
+    
      
-
+ cout<<"both tree are equal :"<<identicalTrees(root,root2);
    
+   vector<treenode*> v;
+   for(int i=0;i<v.size();i++)
+   {
+      cout<<v[i]->data<<endl;
+   }
+
 	return 0;
 }
+
 

@@ -1047,7 +1047,7 @@ void SerializationUtil(treenode* root,vector<int> &v)
     SerializationUtil(root->rigth,v);
 }
 
-void Serialization(treenode* root)
+vector<int> Serialization(treenode* root)
 {
   std::vector<int> v;
   SerializationUtil(root,v);
@@ -1057,7 +1057,7 @@ void Serialization(treenode* root)
     cout<<v[i]<<" ";
   }
   cout<<endl;
-  
+  return v;
 }
 
 
@@ -1089,14 +1089,11 @@ int main(int argc, char const *argv[])
      insertbst(&root2,17);
 
     
-     
- cout<<"both tree are equal :"<<identicalTrees(root,root2);
-   
-   vector<treenode*> v;
-   for(int i=0;i<v.size();i++)
-   {
-      cout<<v[i]->data<<endl;
-   }
+    std::vector<int> v=Serialization(root);
+
+    treenode root3=create_new_node(v[0],NULL,NULL);
+
+    
 
 	return 0;
 }

@@ -1060,6 +1060,18 @@ vector<int> Serialization(treenode* root)
   return v;
 }
 
+void KthfromRoot(treenode* root,int k)
+{
+      if(root==NULL)
+        return;
+      if(k==0)
+      {
+        cout<<root->data<<" ";
+      }
+      KthfromRoot(root->left,k-1);
+      KthfromRoot(root->rigth,k-1);
+}
+
 
 int main(int argc, char const *argv[])
 {
@@ -1078,7 +1090,7 @@ int main(int argc, char const *argv[])
      insertbst(&root,12);
      insertbst(&root,18);
     
-
+   KthfromRoot(root,0);
 
       insertbst(&root2,13);
      insertbst(&root2,10);
@@ -1087,13 +1099,6 @@ int main(int argc, char const *argv[])
      insertbst(&root2,14);
      insertbst(&root2,16);
      insertbst(&root2,17);
-
-    
-    std::vector<int> v=Serialization(root);
-
-    treenode root3=create_new_node(v[0],NULL,NULL);
-
-    
 
 	return 0;
 }

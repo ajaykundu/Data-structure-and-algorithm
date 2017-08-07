@@ -1072,6 +1072,44 @@ void KthfromRoot(treenode* root,int k)
       KthfromRoot(root->rigth,k-1);
 }
 
+int kthformNode(treenode* root,int target,int k)
+{
+  if(root==NULL)
+    return -1;
+  if(root->data==target)
+  {
+      KthfromRoot(root,k);
+      return 0;
+  }
+
+  int dl=kthformNode(root->left,target,k);
+  if(dl!=-1)
+  {   //Ancestor itself at a given distance.
+      if(1+dl==k)
+        cout<<root->data<<" ";
+      //if the node is present in right portion of tree from that anscestor.
+      else
+      {
+        KthfromRoot(root->rigth,k-dl-2);
+      }
+      //increase value of dl by 1 because we are going more upward.
+      return 1+dl;
+  }
+
+  int dr=kthformNode(root->rigth,target,k);
+  //same as for left.
+  if(dr!=-1)
+  {
+    if(1+dl==k){
+      cout<<root->data<<" ";
+    }
+    else {
+      KthfromRoot(root->left,k-dr-2);
+    }
+    return 1+dr;
+  }
+  return -1;
+}
 
 int main(int argc, char const *argv[])
 {
@@ -1091,6 +1129,8 @@ int main(int argc, char const *argv[])
      insertbst(&root,18);
     
    KthfromRoot(root,0);
+   cout<<endl;
+  cout<< kthformNode(root,11,2);
 
       insertbst(&root2,13);
      insertbst(&root2,10);

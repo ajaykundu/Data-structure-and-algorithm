@@ -6,24 +6,24 @@
 #include <vector>
 #include <map>
 #include <algorithm>
-
+#define Max_height 1000
 using namespace std;
 
 struct trees
 {
 	int data;
 	 struct trees* left;
-	 struct trees* rigth;
+	 struct trees* right;
 };
 
 typedef struct trees treenode;
 
-treenode* create_new_node(int val,treenode* left=NULL,treenode* rigth=NULL)
+treenode* create_new_node(int val,treenode* left=NULL,treenode* right=NULL)
 {
 	treenode* newnode=(treenode*)malloc(sizeof(treenode));
 	newnode->data=val;
 	newnode->left=left;
-	newnode->rigth=rigth;
+	newnode->right=right;
     return newnode;
 }
 
@@ -40,7 +40,7 @@ void insertbst(treenode** rootref,int val)
 		insertbst(&((*rootref)->left),val);
 	}
 	else if((*rootref)->data<val)
-		insertbst(&((*rootref)->rigth),val);
+		insertbst(&((*rootref)->right),val);
   else if((*rootref)->data==val)
     return;
 }
@@ -54,7 +54,7 @@ void printinorder(treenode* root)
 
 	printinorder(root->left);
 	cout<<root->data<<" ";
-	printinorder(root->rigth);
+	printinorder(root->right);
  
 
 }
@@ -78,9 +78,9 @@ treenode* treemaximum(treenode* root)
 	{
 		return root;
 	}
-	while(root->rigth!=NULL)
+	while(root->right!=NULL)
 	{
-		root=root->rigth;
+		root=root->right;
 	}
 	return root;
 }
@@ -92,7 +92,7 @@ treenode* treesuccessor(treenode* root)
 		return root;
 	}
 
-	root=root->rigth;
+	root=root->right;
 	while(root->left!=NULL)
 	{
 		root=root->left;
@@ -119,7 +119,13 @@ void searchbyvalue(treenode* root,int search)
 		searchbyvalue(root->left,search);
 	}
 	else
-		searchbyvalue(root->rigth,search);
+		searchbyvalue(root->right,search);
+}
+
+int max(int a,int b)
+
+{
+    return a>b?a:b;
 }
 
 int findheigth(treenode* root)
@@ -129,20 +135,12 @@ int findheigth(treenode* root)
 		return 0;
 	}
     int leftheigth=1+findheigth(root->left);
-
-    int rigthheigth=1+findheigth(root->rigth);
-  return max(rigthheigth,leftheigth);
+    int rightheigth=1+findheigth(root->right);
+  // cout<<leftheigth<<" "<<rightheigth<<endl;
+  return max(rightheigth,leftheigth);
 }
 
-int max(int a,int b)
 
-{
-	if(a>=b)
-	{
-		return a;
-	}
-	return b;
-}
 
 int path[100];
 void leafnode(treenode* root,int n=0)
@@ -153,7 +151,7 @@ void leafnode(treenode* root,int n=0)
 	}
 	path[n]=root->data;
 
-if((root->left)==NULL && (root->rigth)==NULL)
+if((root->left)==NULL && (root->right)==NULL)
 		{
 		for(int i=0;i<=n;i++)
 		{
@@ -163,7 +161,7 @@ if((root->left)==NULL && (root->rigth)==NULL)
 	}
 
 	leafnode(root->left,n+1);
-	leafnode(root->rigth,n+1);
+	leafnode(root->right,n+1);
 return;
 }
 
@@ -175,13 +173,13 @@ int println(treenode* root)
 	  {
 	  	return 0;
 	  }
-	if((root->left)==NULL && root->rigth==NULL){
+	if((root->left)==NULL && root->right==NULL){
          return 1;
        }
   int lm,rm;
 
      lm=    println(root->left);
-	 rm=println(root->rigth);
+	 rm=println(root->right);
     	if(rm || lm )
     	{
     		cout<<root->data<<" ";
@@ -195,13 +193,13 @@ void leafnodes(treenode* root)
 {
 	if(root==NULL)
 		return;
-	if((root->left)==NULL && root->rigth==NULL){
+	if((root->left)==NULL && root->right==NULL){
          cout<<root->data<<" ";
          return;
        }
 
        leafnodes(root->left);
-       leafnodes(root->rigth);
+       leafnodes(root->right);
   
 }
 
@@ -210,7 +208,7 @@ void leafnodes(treenode* root)
 
 // void top_view(treenode* root){
 // 	left_top_view(root);
-// 	rigth_top_view(root->rigth);
+// 	right_top_view(root->right);
 // }
 
 void level_order_newline(treenode* root)
@@ -233,8 +231,8 @@ void level_order_newline(treenode* root)
           {
          // s.push(root);	
           	   cout<<root->data<<" ";
-          	   if(root->rigth!=NULL)
-          	   	q.push(root->rigth);
+          	   if(root->right!=NULL)
+          	   	q.push(root->right);
           	   if(root->left!=NULL)
           	   	q.push(root->left);
           }
@@ -286,9 +284,9 @@ void levelorder_newline1(treenode* root)
              {
                  q.push(temp->left);
              }
-             if(temp->rigth)
+             if(temp->right)
              {
-              q.push(temp->rigth);
+              q.push(temp->right);
              }
         }
 
@@ -312,9 +310,9 @@ void levelorder_newline1(treenode* root)
              {
                  p.push(temp->left);
              }
-             if(temp->rigth)
+             if(temp->right)
              {
-              p.push(temp->rigth);
+              p.push(temp->right);
              }
         }
    if(tempsum>maxsum)
@@ -345,8 +343,8 @@ void deepestNode1(treenode* root)
   	q.pop();
   	if(root->left!=NULL)
   		q.push(root->left);
-  	if(root->rigth)
-  	q.push(root->rigth);
+  	if(root->right)
+  	q.push(root->right);
   }
 
   cout<<deep->data<<endl;
@@ -359,24 +357,24 @@ void rootc(treenode* root,int count=0)
 		return;
 	cout<<count<<endl;
 	rootc(root->left,count+1);
-	rootc(root->rigth,count+1);
+	rootc(root->right,count+1);
 }
 
 int find_Full_Nodes(treenode* root)
 {
 	if(root==NULL)
 		return 0;
-	if(root->left!=NULL && root->rigth==NULL)
+	if(root->left!=NULL && root->right==NULL)
 	{
 		int left=find_Full_Nodes(root->left)+1;
-		int rigth=find_Full_Nodes(root->rigth)+1;
-		return left+rigth;
+		int right=find_Full_Nodes(root->right)+1;
+		return left+right;
 	}
 	else
 	{
        int left=find_Full_Nodes(root->left);
-       int rigth=find_Full_Nodes(root->rigth);
-       return left+rigth;
+       int right=find_Full_Nodes(root->right);
+       return left+right;
 	}
 }
 
@@ -392,14 +390,14 @@ int num_half_node(treenode* root)
     {
     	root=q.front();
     	q.pop();
-    	if((root->left!=NULL && root->rigth==NULL) || (root->left==NULL && root->rigth!=NULL) )
+    	if((root->left!=NULL && root->right==NULL) || (root->left==NULL && root->right!=NULL) )
     	{
     		count++;
     	}
     	if(root->left!=NULL)
     		q.push(root->left);
-    	if(root->rigth!=NULL)
-    		q.push(root->rigth);
+    	if(root->right!=NULL)
+    		q.push(root->right);
 
     }
 return count;
@@ -414,7 +412,7 @@ int checkSameStrcuture(treenode* root1,treenode* root2)
 	if(root1->data==root2->data)
 	{
 		checkSameStrcuture(root1->left,root2->left);
-		checkSameStrcuture(root1->rigth,root2->rigth);
+		checkSameStrcuture(root1->right,root2->right);
 	}
 	else
 	{
@@ -438,7 +436,7 @@ void top_viewC(treenode* root,map<int,pair<int,int> > & m,int v,int level)
     }
 
     top_viewC(root->left,m,v-1,level+1);
-    top_viewC(root->rigth,m,v+1,level+1);
+    top_viewC(root->right,m,v+1,level+1);
 }
 
 void top_view(treenode * root)
@@ -476,8 +474,8 @@ void left_veiw(treenode* root)
               // cout<<root->data<<" ";
                if(root->left!=NULL)
                 q.push(root->left);
-               if(root->rigth!=NULL)
-                q.push(root->rigth);
+               if(root->right!=NULL)
+                q.push(root->right);
           }
           else
           {
@@ -512,7 +510,7 @@ void top_viewCd(treenode* root,map<int,pair<int,int> > & m,int v,int level)
     }
 
     top_viewCd(root->left,m,v-1,level+1);
-    top_viewCd(root->rigth,m,v+1,level+1);
+    top_viewCd(root->right,m,v+1,level+1);
 }
 
 void bo_view(treenode * root)
@@ -528,7 +526,7 @@ void bo_view(treenode * root)
 }
 
 
-void rigth_veiw(treenode* root)
+void right_veiw(treenode* root)
 {   //cout<<"hello "<<endl;
   if(root==NULL)
     return ;
@@ -548,8 +546,8 @@ void rigth_veiw(treenode* root)
           {
          
               // cout<<root->data<<" ";
-            if(root->rigth!=NULL)
-                q.push(root->rigth);
+            if(root->right!=NULL)
+                q.push(root->right);
                if(root->left!=NULL)
                 q.push(root->left);
                
@@ -570,7 +568,7 @@ void rigth_veiw(treenode* root)
    cout<<endl;
 }
 
-void rigth_veiwRAux(treenode* root,int level,int &maxlevel)
+void right_veiwRAux(treenode* root,int level,int &maxlevel)
 {
     if(root==NULL)
       return;
@@ -579,19 +577,19 @@ void rigth_veiwRAux(treenode* root,int level,int &maxlevel)
       cout<<root->data<<" ";
       maxlevel=level;
     }
-    rigth_veiwRAux(root->rigth,level+1,maxlevel);
-    rigth_veiwRAux(root->left,level+1,maxlevel);
+    right_veiwRAux(root->right,level+1,maxlevel);
+    right_veiwRAux(root->left,level+1,maxlevel);
 }
 
-void rigth_veiwR(treenode* root)
+void right_veiwR(treenode* root)
 {
   int maxlevel=0;
-  rigth_veiwRAux(root,1,maxlevel);
+  right_veiwRAux(root,1,maxlevel);
 }
 
-int max1(int left,int rigth)
+int max1(int left,int right)
 {
-  return left>rigth?left:rigth;
+  return left>right?left:right;
 }
 
 int diameterTree(treenode* root,int * ptr)
@@ -600,7 +598,7 @@ int diameterTree(treenode* root,int * ptr)
     return 0;
   int left,rig;
    left=diameterTree(root->left,ptr)+1;
-   rig=diameterTree(root->rigth,ptr)+1;
+   rig=diameterTree(root->right,ptr)+1;
    if(left+ rig >  *ptr)
     *ptr=left+rig;
 
@@ -615,9 +613,9 @@ int treeHeight(treenode *root)
   }
 
 int leftHeight=treeHeight(root->left)+1;
-int rigthHeight=treeHeight(root->rigth)+1;
+int rightHeight=treeHeight(root->right)+1;
 
-return max(leftHeight,rigthHeight);
+return max(leftHeight,rightHeight);
 
 }
 
@@ -642,7 +640,7 @@ void printpathutil(treenode* head,int v[],int level)
     return;
   v[level]=head->data;
 
-  if(head->left==NULL && head->rigth==NULL)
+  if(head->left==NULL && head->right==NULL)
   {
        for(int i=0;i<=level;i++)
        {
@@ -651,7 +649,7 @@ void printpathutil(treenode* head,int v[],int level)
        cout<<endl;
   }
   printpathutil(head->left,v,level+1);
-  printpathutil(head->rigth,v,level+1);
+  printpathutil(head->right,v,level+1);
 }
 
 
@@ -670,7 +668,7 @@ void printpathrecurutil(treenode* root,int path[],int pathlen,int givensum)
     path[pathlen]=root->data;
     pathlen++;
 
-    if(root->left==NULL && root->rigth==NULL)
+    if(root->left==NULL && root->right==NULL)
     {
       int sum=0;
       for(int i=0;i<pathlen;i++)
@@ -689,7 +687,7 @@ void printpathrecurutil(treenode* root,int path[],int pathlen,int givensum)
     
 
     printpathrecurutil(root->left,path,pathlen,givensum);
-    printpathrecurutil(root->rigth,path,pathlen,givensum);
+    printpathrecurutil(root->right,path,pathlen,givensum);
 }
 
 void printpathrecur(treenode* root,int givensum)
@@ -706,15 +704,15 @@ bool hasPathSum(treenode* root,int sum)
       {     int ans=0;
            int subsum=sum-root->data;
            cout<<root->data<<" ";
-           if(subsum==0 && root->left==NULL && root->rigth==NULL)
+           if(subsum==0 && root->left==NULL && root->right==NULL)
             return 1;
 
           if(root->left!=NULL)
           {
                ans=ans || hasPathSum(root->left,subsum);
           }
-          if(root->rigth!=NULL)
-            ans=ans || hasPathSum(root->rigth,subsum);
+          if(root->right!=NULL)
+            ans=ans || hasPathSum(root->right,subsum);
           return ans;
       }
 }
@@ -723,7 +721,7 @@ int sumTree(treenode* root)
 {
   if(root==NULL)
     return 0;
-  return root->data + sumTree(root->left) + sumTree(root->rigth);
+  return root->data + sumTree(root->left) + sumTree(root->right);
 }
 
 int sumTreeL(treenode* root)
@@ -741,8 +739,8 @@ int sumTreeL(treenode* root)
           sum=sum+temp->data;
           if(temp->left!=NULL)
             q.push(temp->left);
-          if(temp->rigth!=NULL)
-            q.push(temp->rigth);
+          if(temp->right!=NULL)
+            q.push(temp->right);
     }
 
    
@@ -756,9 +754,9 @@ treenode* MirrorBT(treenode* root)
   if(root!=NULL)
   {
       MirrorBT(root->left);
-      MirrorBT(root->rigth);
-      temp=root->rigth;
-      root->rigth=root->left;
+      MirrorBT(root->right);
+      temp=root->right;
+      root->right=root->left;
       root->left=temp;
 
   }
@@ -779,7 +777,7 @@ int checkingMirror(treenode* root1,treenode* root2)
 //       return root->data;
 //     int ans=0;
 //     ans=leastCommonAnsterUtil(root->left,a,b,first,second);
-//     ans=leastCommonAnsterUtil(root->rigth,a,b,first,second);
+//     ans=leastCommonAnsterUtil(root->right,a,b,first,second);
     
 //     if(root->data==a)
 //       first=1;
@@ -814,7 +812,7 @@ int findPathofNodeUtil(treenode* root,int val,int arr[],int level,int& length)
        int ans=0;
        level++;
        ans=ans || findPathofNodeUtil(root->left,val,arr,level,length);
-       ans=ans || findPathofNodeUtil(root->rigth,val,arr,level,length);
+       ans=ans || findPathofNodeUtil(root->right,val,arr,level,length);
 
        return ans;
 }
@@ -863,7 +861,7 @@ treenode* findLCA(treenode* root,int n1,int n2)
   if(root->data==n2) return root;
 
   treenode* left_lca=findLCA(root->left,n1,n2);
-  treenode* right_lca=findLCA(root->rigth,n1,n2);
+  treenode* right_lca=findLCA(root->right,n1,n2);
   if(left_lca!=NULL && right_lca!=NULL)
   {
     return root;
@@ -885,7 +883,7 @@ treenode* predecessor(treenode* root)
    root=root->left;
    while(root->left!=NULL)
    {
-    root=root->rigth;
+    root=root->right;
    }
    return root;
 }
@@ -901,21 +899,21 @@ void deleteNode(treenode** rootref,int val)
     }
     else if((*rootref)->data < val)
     {
-        deleteNode(&(*rootref)->rigth,val);
+        deleteNode(&(*rootref)->right,val);
     }
     else {
-            if((*rootref)->left==NULL && (*rootref)->rigth==NULL)
+            if((*rootref)->left==NULL && (*rootref)->right==NULL)
             {
                   (*rootref)=NULL;   //case 1 : for leaf node.
             }
-            else if((*rootref)->left!=NULL && (*rootref)->rigth==NULL)
+            else if((*rootref)->left!=NULL && (*rootref)->right==NULL)
             {
                   (*rootref)=(*rootref)->left; //case 2: for only left child.
 
             }
-            else if((*rootref)->rigth!=NULL && (*rootref)->left==NULL)
+            else if((*rootref)->right!=NULL && (*rootref)->left==NULL)
             {
-                 (*rootref)=(*rootref)->rigth;   //case 3: for only rigth child.
+                 (*rootref)=(*rootref)->right;   //case 3: for only right child.
             }
             else 
             {                    // case 4 : have both the child.
@@ -942,7 +940,7 @@ treenode* lcabst(treenode* root,int a,int b)
 
      if(root->data<a && root->data <b)
      {
-        lcabst(root->rigth,a,b);
+        lcabst(root->right,a,b);
      }
 
      
@@ -956,7 +954,7 @@ void  veticaltraversalutil(treenode* root,map<int,vector<pair<int,int> > > & m,i
       m[verticaldec].push_back(make_pair(level,root->data));
 
       veticaltraversalutil(root->left,m,level+1,verticaldec-1);
-      veticaltraversalutil(root->rigth,m,level+1,verticaldec+1);
+      veticaltraversalutil(root->right,m,level+1,verticaldec+1);
 
 }
 
@@ -1000,7 +998,7 @@ int identicalTrees(treenode* root1,treenode* root2)
     }
     if(root1->data==root2->data)
     {
-      return (identicalTrees(root1->left,root2->left) && identicalTrees(root1->rigth,root2->rigth));
+      return (identicalTrees(root1->left,root2->left) && identicalTrees(root1->right,root2->right));
     }
     return 0;
 }
@@ -1011,7 +1009,7 @@ void NodeOftreeFun(treenode* root,vector<treenode*> &NodeOftree)
       return;
     NodeOftree.push_back(root);
     NodeOftreeFun(root->left,NodeOftree);
-    NodeOftreeFun(root->rigth,NodeOftree);
+    NodeOftreeFun(root->right,NodeOftree);
 }
 
 vector<treenode*> NumberOfduplicateSubtrees(treenode* root)
@@ -1044,7 +1042,7 @@ void SerializationUtil(treenode* root,vector<int> &v)
     }
     v.push_back(root->data);
     SerializationUtil(root->left,v);
-    SerializationUtil(root->rigth,v);
+    SerializationUtil(root->right,v);
 }
 
 vector<int> Serialization(treenode* root)
@@ -1068,8 +1066,9 @@ void KthfromRoot(treenode* root,int k)
       {
         cout<<root->data<<" ";
       }
-      KthfromRoot(root->left,k-1);
-      KthfromRoot(root->rigth,k-1);
+     KthfromRoot(root->left,k-1);
+      KthfromRoot(root->right,k-1);
+
 }
 
 int kthformNode(treenode* root,int target,int k)
@@ -1090,13 +1089,13 @@ int kthformNode(treenode* root,int target,int k)
       //if the node is present in right portion of tree from that anscestor.
       else
       {
-        KthfromRoot(root->rigth,k-dl-2);
+        KthfromRoot(root->right,k-dl-2);
       }
       //increase value of dl by 1 because we are going more upward.
       return 1+dl;
   }
 
-  int dr=kthformNode(root->rigth,target,k);
+  int dr=kthformNode(root->right,target,k);
   //same as for left.
   if(dr!=-1)
   {
@@ -1109,6 +1108,38 @@ int kthformNode(treenode* root,int target,int k)
     return 1+dr;
   }
   return -1;
+}
+
+int min(int a,int b)
+{
+  return a>b?b:a;
+}
+
+void kDistanceFromLeafUtil(treenode* root,int path[],bool visited[],int pathlen,int k)
+{
+     if(root==NULL)
+      return ;
+
+    path[pathlen]=root->data;
+    visited[pathlen]=false;
+    pathlen++;
+   
+   if(root->left==NULL && root->right==NULL && pathlen-k-1>=0 && visited[pathlen-k-1]==false)
+   {
+       cout<<path[pathlen-k-1]<<" ";
+       visited[pathlen-k-1]=true;
+       return; 
+   }
+
+   kDistanceFromLeafUtil(root->left,path,visited,pathlen,k);
+   kDistanceFromLeafUtil(root->right,path,visited,pathlen,k);
+}
+
+void kDistanceFromLeaf(treenode* root,int k)
+{
+   int path[Max_height];
+   bool visited[Max_height]={false};
+   kDistanceFromLeafUtil(root,path,visited,0,k);
 }
 
 int main(int argc, char const *argv[])
@@ -1126,12 +1157,8 @@ int main(int argc, char const *argv[])
      insertbst(&root,17);
      //insertbst(&root,15);
      insertbst(&root,12);
-     insertbst(&root,18);
     
-   KthfromRoot(root,0);
-   cout<<endl;
-  cout<< kthformNode(root,11,2);
-
+     kDistanceFromLeaf(root,2);
       insertbst(&root2,13);
      insertbst(&root2,10);
      insertbst(&root2,11);

@@ -7,6 +7,7 @@
 #include <map>
 #include <algorithm>
 #define Max_height 1000
+#define tn treenode
 using namespace std;
 
 struct trees
@@ -1141,6 +1142,8 @@ void kDistanceFromLeaf(treenode* root,int k)
    bool visited[Max_height]={false};
    kDistanceFromLeafUtil(root,path,visited,0,k);
 }
+
+
 
 int main(int argc, char const *argv[])
 {

@@ -515,6 +515,52 @@ node* concate(node* first,node* second)
      return head;
 }
 
+node* microsoft(node* head){
+  if(head==NULL || head->next==NULL || head->next->next==NULL)
+  {
+     return head;
+  }
+
+    node* temp=head;
+    node* tail=temp->next;
+
+    while(temp!=NULL && temp->next!=NULL)
+    {
+          node* tempeven=temp->next;
+          temp->next=tempeven->next;
+          tempeven->next=head;
+          head=tempeven;
+
+
+          cout<<temp->data<<"->";
+          if(temp->next==NULL)
+          {
+            break;
+          }
+          temp=temp->next;
+    }
+
+     temp->next=head;
+     head=tail->next;
+     tail->next=NULL;
+
+  cout<<endl;
+  node* temp3=head;
+    
+
+
+ while(temp3!=NULL)
+  {
+    cout<<temp3->data<<"->";
+    temp3=temp3->next;
+  }
+
+    
+
+  return  NULL;
+}
+
+
 
 
 int main(int argc, char** argv)
@@ -540,17 +586,19 @@ int main(int argc, char** argv)
    node* list2=NULL;
    node* conlist=NULL;
 
-   addfront(&list1,4);
+
+  // addfront(&list1,8);
+  //  addfront(&list1,7);
+  //  addfront(&list1,6);
+  //  addfront(&list1,5);
+  // addfront(&list1,4);
    addfront(&list1,3);
    addfront(&list1,2);
    addfront(&list1,1);
 
-   addfront(&list2,5);
-   addfront(&list2,6);
-   addfront(&list2,7);
-   addfront(&list2,8);
-
-   conlist=concate(list1,list2);
-   print(conlist);
+   
+   print(list1);
+   microsoft(list1);
+   //print(conlist);
 
 }

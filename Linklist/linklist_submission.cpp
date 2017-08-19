@@ -532,7 +532,7 @@ node* microsoft(node* head){
           head=tempeven;
 
 
-          cout<<temp->data<<"->";
+         // cout<<temp->data<<"->";
           if(temp->next==NULL)
           {
             break;
@@ -587,11 +587,11 @@ int main(int argc, char** argv)
    node* conlist=NULL;
 
 
-  // addfront(&list1,8);
-  //  addfront(&list1,7);
-  //  addfront(&list1,6);
-  //  addfront(&list1,5);
-  // addfront(&list1,4);
+ // addfront(&list1,8);
+   addfront(&list1,7);
+   addfront(&list1,6);
+   addfront(&list1,5);
+  addfront(&list1,4);
    addfront(&list1,3);
    addfront(&list1,2);
    addfront(&list1,1);
